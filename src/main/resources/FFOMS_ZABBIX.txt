@@ -1,0 +1,16 @@
+SELECT
+DISTINCT t.triggerid, e.eventid, h.host, t.description, to_timestamp(e.clock) as "create date", to_timestamp(t.lastchange) as "resolution date", a.message as "resolution message"
+FROM
+triggers t, hosts h, items i, functions f, events e ,acknowledges a
+WHERE
+t.status=0
+AND f.triggerid=t.triggerid
+and i.itemid=f.itemid
+AND i.status=0
+and h.hostid=i.hostid
+AND h.status=0 AND t.triggerid=e.objectid
+and a.eventid=e.eventid
+AND acknowledged=1
+--and e.eventid=395571
+and to_timestamp(e.clock)::date <@ daterange( ? ::date, ? ::date, '[]')
+ORDER BY 4 ASC;

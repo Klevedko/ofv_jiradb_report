@@ -1,0 +1,56 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd ">
+
+    <bean id="dataSourceFFOMS"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://ip:5432/jiradb"/>
+        <property name="username" value="ireport"/>
+        <property name="password" value="pass"/>
+    </bean>
+    <bean id="FFOMS"
+          class="ofv_jiradb_report.Templates.ReportJDBCTemplateFOMS">
+        <property name="dataSourceFFOMS" ref="dataSourceFFOMS"/>
+    </bean>
+    <bean id="ERZ"
+          class="ofv_jiradb_report.Templates.ReportJDBCTemplateFOMS">
+        <property name="dataSourceFFOMS" ref="dataSourceFFOMS"/>
+    </bean>
+
+
+    <bean id="dataSourceOTV"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://ip:5432/postgres"/>
+        <property name="username" value="ireport"/>
+        <property name="password" value="pass"/>
+    </bean>
+    <bean id="OTV"
+          class="ofv_jiradb_report.Templates.ReportJDBCTemplateFOMS">
+        <property name="dataSourceOTV" ref="dataSourceOTV"/>
+    </bean>
+    <bean id="SDDOMRF"
+          class="ofv_jiradb_report.Templates.ReportJDBCTemplateFOMS">
+        <property name="dataSourceOTV" ref="dataSourceOTV"/>
+    </bean>
+    <bean id="FPC"
+          class="ofv_jiradb_report.Templates.ReportJDBCTemplateFOMS">
+        <property name="dataSourceOTV" ref="dataSourceOTV"/>
+    </bean>
+
+
+    <bean id="dataSourceZABBIX"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://ip:5432/zabbix"/>
+        <property name="username" value="ireport"/>
+        <property name="password" value="pass"/>
+    </bean>
+    <bean id="FFOMS_ZABBIX"
+          class="ofv_jiradb_report.Templates.ReportJDBCTemplateFOMS">
+        <property name="dataSourceZABBIX" ref="dataSourceZABBIX"/>
+    </bean>
+</beans>

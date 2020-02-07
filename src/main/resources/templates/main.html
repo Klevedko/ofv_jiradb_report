@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="jumbotron">
+    <h1 class="display-4">OFV</h1>
+    <p class="lead">Application for generating reports from different sources</p>
+    <hr class="my-4"/>
+    <p class="lead">
+
+    <div class="accordion" id="accordionExample">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                            aria-expanded="false" aria-controls="collapseOne">
+                        SDDOMRF
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+                    <button type="submit" value="Submit" class="btn btn-primary" data-toggle="modal"
+                            data-target="#SDDOMRFModal">
+                        Start
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                            data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        ERZ
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div class="card-body">
+                    <button type="submit" value="Submit" class="btn btn-primary" data-toggle="modal"
+                            data-target="#ERZModal">
+                        Start
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingThree">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                            data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        FPC
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                <div class="card-body">
+                    <button type="submit" value="Submit" class="btn btn-primary" data-toggle="modal"
+                            data-target="#FPCModal">
+                        Start
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingFour">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                            data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        FFOMS
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                <div class="card-body">
+                    <button type="submit" value="Submit" class="btn btn-primary" data-toggle="modal"
+                            data-target="#FFOMSModal">
+                        Start
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingFive">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                            data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        FFOMS_ZABBIX
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseFive" class="collapse" aria-labelledby="headingFIve" data-parent="#accordionExample">
+                <div class="card-body">
+                    <button type="submit" value="Submit" class="btn btn-primary" data-toggle="modal"
+                            data-target="#FFOMS_ZABBIXModal">
+                        Start
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingSix">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                            data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                        OTV
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample">
+                <div class="card-body">
+                    <button type="submit" value="Submit" class="btn btn-primary" data-toggle="modal"
+                            data-target="#OTVModal">
+                        Start
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p>
+    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+       aria-controls="collapseExample">
+        Help
+    </a>
+</p>
+
+<div class="collapse" id="collapseExample">
+    <div class="card card-body">
+        <p>This is an application to download reports from different databases.</p>
+        <p>All SQL queries are in the project root.</p>
+    </div>
+</div>
+
+
+<div class="modal fade" id="SDDOMRFModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="SDDOMRFModalLabel">SDDOMRF</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/uploadStatus/SDDOMRF" enctype="multipart/form-data">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="date from"
+                               value="2019-05-21"
+                               aria-label="date from2"
+                               name="F_start_date"
+                               aria-describedby="SDDOMRF-addon1"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="DOMRF-addon1"></span>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="date to"
+                               value="2019-05-23"
+                               aria-label="date to1"
+                               name="F_end_date"
+                               aria-describedby="SDDOMRF-addon2"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="DOMRF-addon2"></span>
+                        </div>
+                    </div>
+                    <button type="submit" value="Submit" class="btn btn-primary" data-toggle="modal"
+                            data-target="#exampleModal">
+                        Start
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" name="ERZ" id="ERZModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ERZModalLabel">ERZ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/uploadStatus/ERZ" enctype="multipart/form-data">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="date from"
+                               value="2019-05-21"
+                               aria-label="date from2"
+                               name="F_start_date"
+                               aria-describedby="static-addon1"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="ERZaddon1"></span>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="date to"
+                               value="2019-05-23"
+                               aria-label="date to1"
+                               name="F_end_date"
+                               aria-describedby="static-addon2"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="ERZaddon2"></span>
+                        </div>
+                    </div>
+                    <button type="submit" value="Submit" class="btn btn-primary" data-toggle="modal"
+                            data-target="#exampleModal">
+                        Start
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" name="FPC" id="FPCModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="FPCModalLabel">FPC</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/uploadStatus/FPC" enctype="multipart/form-data">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="date from"
+                               value="2019-05-21"
+                               aria-label="date from2"
+                               name="F_start_date"
+                               aria-describedby="static-addon1"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="FPCaddon1"></span>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="date to"
+                               value="2019-05-23"
+                               aria-label="date to1"
+                               name="F_end_date"
+                               aria-describedby="static-addon2"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="FPCaddon2"></span>
+                        </div>
+                    </div>
+                    <button type="submit" value="Submit" class="btn btn-primary" data-toggle="modal"
+                            data-target="#exampleModal">
+                        Start
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" name="FFOMS" id="FFOMSModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="FFOMSModalLabel">FFOMS</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/uploadStatus/FFOMS" enctype="multipart/form-data">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="date from"
+                               value="2019-05-21"
+                               aria-label="date from2"
+                               name="F_start_date"
+                               aria-describedby="static-addon1"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="FFOMSaddon1"></span>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="date to"
+                               value="2019-05-23"
+                               aria-label="date to1"
+                               name="F_end_date"
+                               aria-describedby="static-addon2"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="FFOMSaddon2"></span>
+                        </div>
+                    </div>
+                    <button type="submit" value="Submit" class="btn btn-primary" data-toggle="modal"
+                            data-target="#exampleModal">
+                        Start
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" name="FFOMS_ZABBIX" id="FFOMS_ZABBIXModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="FFOMS_ZABBIXModalLabel">FFOMS_ZABBIX</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/uploadStatus/FFOMS_ZABBIX" enctype="multipart/form-data">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="date from"
+                               value="2019-05-21"
+                               aria-label="date from2"
+                               name="F_start_date"
+                               aria-describedby="static-addon1"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="FFOMS_ZABBIXaddon1"></span>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="date to"
+                               value="2019-05-23"
+                               aria-label="date to1"
+                               name="F_end_date"
+                               aria-describedby="static-addon2"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="FFOMS_ZABBIXaddon2"></span>
+                        </div>
+                    </div>
+                    <button type="submit" value="Submit" class="btn btn-primary" data-toggle="modal"
+                            data-target="#exampleModal">
+                        Start
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" name="OTV" id="OTVModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="OTVModalLabel">OTV</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/uploadStatus/OTV" enctype="multipart/form-data">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="date from"
+                               value="2019-05-21"
+                               aria-label="date from2"
+                               name="F_start_date"
+                               aria-describedby="static-addon1"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="OTVaddon1"></span>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="date to"
+                               value="2019-05-23"
+                               aria-label="date to1"
+                               name="F_end_date"
+                               aria-describedby="static-addon2"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="OTVaddon2"></span>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Исполнители:"
+                               value=""
+                               aria-label="Assignee to users"
+                               name="F_assignee_to_users"
+                               aria-describedby="static-addon3"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="OTVaddon3"></span>
+                        </div>
+                    </div>
+                    <button type="submit" value="Submit" class="btn btn-primary" data-toggle="modal"
+                            data-target="#exampleModal">
+                        Start
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+select concat(p.pkey, '-', i.issuenum) as "Ключ проблемы" ,
+to_char( i.created, 'DD.MM.YYYY HH24:MI') as "Создано",
+cf1.customvalue as "Подразделение ФОМС",
+cf2.stringvalue as "Контактная информация",
+cf0.customvalue as "Подсистема",
+i.description::text as "Описание",
+it.pname as "Тип задачи",
+pr.pname as "Приоритет",
+l.lbl_arr as "Метки",
+to_char( i.resolutiondate, 'DD.MM.YYYY HH24:MI') as "Дата решения",
+cf3.textvalue as "Содержание выполненных работ",
+cfX.customvalue as "Содержание выполненных работ(кратко)",
+ist.pname as "Статус",
+isl.name as "Уровень безопасности",
+i.summary as "Тема",
+rs.pname as "Решение",
+cf4.customvalue as "Категория запроса" ,
+cf5.stringvalue as "ФИО инициатора"
+from jiraissue i
+join project p on p.id = i.project
+join issuetype it on it.id = i.issuetype
+join priority pr on pr.id = i.priority
+left join resolution rs on rs.id = i.resolution
+left join issuestatus ist on ist.id = i.issuestatus
+left join schemeissuesecuritylevels isl on isl.id = i.security
+left join lateral (select array_agg(l.label order by l.id) as lbl_arr
+	   from label l
+	  where l.issue = i.id
+	 ) as l on true
+left join lateral (select cfo.customvalue
+	   from customfieldvalue cfv
+	   join customfield cf on cf.id = cfv.customfield
+	   join customfieldoption cfo on cfo.customfield = cfv.customfield and cfo.id = cfv.stringvalue::numeric
+	  where cfv.issue = i.id
+		and cf.id in (10100)
+	  limit 1
+	 ) as cf0 on true
+left join lateral (select cfo.customvalue
+	   from customfieldvalue cfv
+	   join customfield cf on cf.id = cfv.customfield
+	   join customfieldoption cfo on cfo.customfield = cfv.customfield and cfo.id = cfv.stringvalue::numeric
+	  where cfv.issue = i.id
+		and cf.id in (10400)
+	  limit 1
+	 ) as cfX on true
+left join lateral (select cfo.customvalue
+	   from customfieldvalue cfv
+	   join customfield cf on cf.id = cfv.customfield
+	   join customfieldoption cfo on cfo.customfield = cfv.customfield and cfo.id = cfv.stringvalue::numeric
+	  where cfv.issue = i.id
+		and cf.id in (10101)
+	  limit 1
+	 ) as cf1 on true
+left join lateral (select cfv.stringvalue
+	   from customfieldvalue cfv
+	   join customfield cf on cf.id = cfv.customfield
+	  where cfv.issue = i.id
+		and cf.id in (10102)
+	  limit 1
+	 ) as cf2 on true
+left join lateral (select cfv.textvalue as textvalue
+	   from customfieldvalue cfv
+	   join customfield cf on cf.id = cfv.customfield
+	  where cfv.issue = i.id
+		and cf.id in (10103)
+	  limit 1
+	 ) as cf3 on true
+left join lateral (select cfo.customvalue
+	from customfieldvalue cfv
+	join customfield cf on cf.id = cfv.customfield
+	join customfieldoption cfo on cfo.customfield = cfv.customfield and cfo.id = cfv.stringvalue::numeric
+	where cfv.issue = i.id
+	and cf.id in (10407)
+	limit 1
+) as cf4 on true
+
+left join lateral (select cfv.stringvalue
+from customfieldvalue cfv
+join customfield cf on cf.id = cfv.customfield
+where cfv.issue = i.id
+and cf.id in (10403)
+limit 1
+) as cf5 on true
+
+where
+i.created::date <@ daterange( :dateFrom ::date, :dateTo ::date, '[]')
+and p.pkey = 'ERZ'
+order by i.id desc;

@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  report:
+    image: 538721144237.dkr.ecr.eu-west-1.amazonaws.com/ofv_jiradb:latest
+    deploy:
+      resources:
+        limits:
+          cpus: '0.55'
+          memory: 3072M
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          [node.labels.type == db]
+    ports:
+      - "8870:5432"
+      - "8871:8080"

@@ -1,0 +1,118 @@
+select concat(p.pkey, '-', i.issuenum) as "Ключ проблемы",
+it.pname as "Тип задачи",
+pr.pname as "Приоритет",
+to_char( i.created, 'DD.MM.YYYY HH24:MI') as "Создано",
+i.description::text as "Описание",
+to_char( i.resolutiondate, 'DD.MM.YYYY HH24:MI') as "Дата решения",
+ist.pname as "Статус",
+rs.pname as "Решение",
+i.assignee as "Исполнитель",
+i.reporter as "Автор",
+sla.*,
+AssegneeWorked.Assegnee_worklogs::TEXT as "Затрачено исполнителем",
+worked.total_worklogs::TEXT as "Общее затраченное время",
+to_char(firstTransition.firstAction, 'dd.MM.yyyy HH24:mi')::TEXT as "Время первого перехода"
+from jiraissue i
+join project p on p.id = i.project
+join issuetype it on it.id = i.issuetype
+join priority pr on pr.id = i.priority
+left join resolution rs on rs.id = i.resolution
+left join issuestatus ist on ist.id = i.issuestatus
+left join schemeissuesecuritylevels isl on isl.id = i.security
+left join lateral (select array_agg(l.label order by l.id) as lbl_arr
+	   from label l
+	  where l.issue = i.id
+	 ) as l on true
+left join lateral (select cfo.customvalue
+	   from customfieldvalue cfv
+	   join customfield cf on cf.id = cfv.customfield
+	   join customfieldoption cfo on cfo.customfield = cfv.customfield and cfo.id = cfv.stringvalue::numeric
+	  where cfv.issue = i.id
+		and cf.id in (10100)
+	  limit 1
+	 ) as cf0 on true
+left join lateral (select cfo.customvalue
+	   from customfieldvalue cfv
+	   join customfield cf on cf.id = cfv.customfield
+	   join customfieldoption cfo on cfo.customfield = cfv.customfield and cfo.id = cfv.stringvalue::numeric
+	  where cfv.issue = i.id
+		and cf.id in (10400)
+	  limit 1
+	 ) as cfX on true
+left join lateral (select cfo.customvalue
+	   from customfieldvalue cfv
+	   join customfield cf on cf.id = cfv.customfield
+	   join customfieldoption cfo on cfo.customfield = cfv.customfield and cfo.id = cfv.stringvalue::numeric
+	  where cfv.issue = i.id
+		and cf.id in (10101)
+	  limit 1
+	 ) as cf1 on true
+left join lateral (select cfv.stringvalue
+	   from customfieldvalue cfv
+	   join customfield cf on cf.id = cfv.customfield
+	  where cfv.issue = i.id
+		and cf.id in (10102)
+	  limit 1
+	 ) as cf2 on true
+left join lateral (select cfv.textvalue as textvalue
+	   from customfieldvalue cfv
+	   join customfield cf on cf.id = cfv.customfield
+	  where cfv.issue = i.id
+		and cf.id in (10103)
+	  limit 1
+	 ) as cf3 on true
+left join lateral (select cfo.customvalue
+	from customfieldvalue cfv
+	join customfield cf on cf.id = cfv.customfield
+	join customfieldoption cfo on cfo.customfield = cfv.customfield and cfo.id = cfv.stringvalue::numeric
+	where cfv.issue = i.id
+	and cf.id in (10407)
+	limit 1
+) as cf4 on true
+
+left join lateral (select string_agg(url, ', ') as url from remotelink where issueid = i.id) as remoteUrl on true
+
+  left join lateral (SELECT string_agg(distinct concat_ws('-', p.pkey, li.issuenum), ', ') as link
+                       FROM ISSUELINK IL
+                      INNER JOIN JIRAISSUE LI ON ( LI.ID = IL.DESTINATION or LI.ID = IL.SOURCE)
+                      INNER JOIN project p ON ( p.id = li.project)
+                      WHERE (IL.SOURCE = i.ID or IL.DESTINATION = i.id)
+                        and li.id<>i.id
+                    ) as links on true
+
+left join lateral (select
+make_interval(weeks => (textvalue::json #>> '{completeSLAData, 0, remainingTimeInDaysAndMillis, weeks}')::int,
+                     days  => (textvalue::json #>> '{completeSLAData, 0, remainingTimeInDaysAndMillis, remainingDaysWithinWeek}')::int,
+                     secs  => (textvalue::json #>> '{completeSLAData, 0, remainingTimeInDaysAndMillis, remainingMillisWithinDay}')::int8/1000
+                    )::TEXT  as sla ,
+make_interval(secs => (textvalue::json #>> '{ongoingSLAData,thresholdData,remainingTime}')::int8/1000) as slaMinus
+from customfield xcf
+join customfieldvalue xcv on xcv.customfield = xcf.id
+join jiraissue xi on xcv.issue = xi.id
+where xcf.customfieldtypekey = 'com.atlassian.servicedesk:sd-sla-field'
+and xi.id = i.id
+and xcf.id = 18000) as sla on true
+
+left join lateral (with q as (
+                   SELECT author, sum(timeworked * interval '1 sec') as x FROM worklog where issueid = i.id group by 1
+                   )
+                   select string_agg(concat_ws(': ' , author, x), ', ') as total_worklogs FROM q) as worked on true
+
+left join lateral (with q as (
+                   SELECT author, sum(timeworked * interval '1 sec') as x
+                   FROM worklog where issueid = i.id and author = i.assignee
+									 group by 1
+                   )
+                   select x as Assegnee_worklogs FROM q) as AssegneeWorked on true
+
+left join lateral (SELECT changegroup.created::timestamp(0) as firstAction
+                   FROM changeitem
+                   JOIN changegroup ON changeitem.groupid=changegroup.id
+                   WHERE changeitem.field='status' and issueid = i.id
+                   order by changeitem.id
+                   limit 1) as firstTransition on true
+where
+i.created::date <@ daterange( :dateFrom ::date, :dateTo ::date, '[]')
+and p.pkey in ('FFOMSSUPP','FPC','SYSADM' , 'II')
+and case when :assignee_filter then i.assignee in (:tags) else 1=1 end
+order by 1, i.id desc ;

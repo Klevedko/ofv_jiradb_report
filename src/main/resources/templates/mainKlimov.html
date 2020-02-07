@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <!--<script src="1.js"></script>-->
+</head>
+<body>
+<script>
+  const poher=e=>{
+    const files=`
+ERZ.txt
+FFOMS_ZABBIX.txt
+FOMS.txt
+FPC.txt
+SDDOMRF.txt
+`.split(/\n/).map(a=>a.replace(/\.txt$/,'').trim()).filter(a=>a)
+    const a=files //['ERZ','FROMS']
+    const s=a.map(t=>`
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#${t}"
+                            aria-expanded="false" aria-controls="${t}">
+                        ${t}
+                    </button>
+                </h5>
+            </div>
+
+            <div id="${t}" class="collapse" aria-labelledby="${t}" data-parent="#accordionExample">
+                <div class="card-body">
+                    <button type="submit" value="Submit" class="btn btn-primary" data-toggle="modal"
+                            data-target="#${t}Modal">
+                         Start
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('\n')
+    document.getElementById('accordionExample').innerHTML=s
+   };
+
+   const naher=e=>{
+    const files=`
+ERZ.txt
+FFOMS_ZABBIX.txt
+FOMS.txt
+FPC.txt
+SDDOMRF.txt
+`.split(/\n/).map(a=>a.replace(/\.txt$/,'').trim()).filter(a=>a)
+    const a=files //['ERZ','FROMS']
+    const ss=a.map(t=>`
+        <div class="modal fade" id="${t}Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true" onsubmit="close">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="${t}ModalLabel">${t}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/uploadStatus/${t}" enctype="multipart/form-data">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="date from"
+                               value="2019-05-21"
+                               aria-label="date from2"
+                               name="F_start_date"
+                               aria-describedby="${t}-addon1"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="${t}-addon1"></span>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="date to"
+                               value="2019-05-23"
+                               aria-label="date to1"
+                               name="F_end_date"
+                               aria-describedby="${t}-addon2"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="${t}-addon2"></span>
+                        </div>
+                    </div>
+                    <button type="submit" value="Submit" class="btn btn-primary" data-toggle="modal"
+                            data-target="#exampleModal">
+                        Start
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+    `).join('\n')
+    document.getElementById('modalki').innerHTML=ss
+   };
+
+  document.body.onload=e=>{
+    poher()
+    naher()
+  }
+</script>
+
+<div class="jumbotron">
+    <h1 class="display-4">OFV</h1>
+    <p class="lead">App for generate reports</p>
+    <hr class="my-4"/>
+    <p class="lead">
+    <div class="accordion" id="accordionExample">
+
+</div>
+
+<p>
+    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+       aria-controls="collapseExample">
+        Help
+    </a>
+</p>
+
+<div class="collapse" id="collapseExample">
+    <div class="card card-body">
+        <p>This is an application to download reports from different databases.</p>
+        <p>All SQL queries are in the project root.</p>
+    </div>
+</div>
+
+    <div id="modalki"></div>
+</p>
+</div>
+</body>
+</html>
